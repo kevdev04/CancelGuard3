@@ -14,7 +14,7 @@ struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Text("CancelGuard")
+                    Text("AntiFuna")
                         .font(.title)
                         .fontWeight(.bold)
                         .foregroundColor(.primary)
