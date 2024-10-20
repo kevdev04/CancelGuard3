@@ -19,42 +19,43 @@ struct NewPost: View {
     @State private var postContent: String = ""
     @State private var isLoading: Bool = false // Loading state
     @State private var selectedImage: String = "imagen-1" // Default selected image
+    @Environment(\.presentationMode) var presentationMode // To handle navigation
 
     var body: some View {
-        VStack(spacing: 10) { // Set spacing for the VStack
-            // Botón de regreso
+        VStack(spacing: 10) {
+            // Custom back button
             Button(action: {
-                // Acción del botón de regreso
+                presentationMode.wrappedValue.dismiss() // Dismiss the view
             }) {
                 HStack {
-                    Image(systemName: "chevron.left") // Use a back arrow icon
+                    Image(systemName: "chevron.left")
                         .foregroundColor(.black)
-                    // Nueva publicación (sin fondo y texto negro)
                     TextField("Nueva Publicación", text: $postTitle)
-                        .padding(.vertical) // Vertical padding for the text field
-                        .foregroundColor(.black) // Set text color to black
-                        .font(.headline) // Set font to make it more prominent
-                        .padding(.horizontal) // Horizontal padding
+                        .padding(.vertical)
+                        .foregroundColor(.black)
+                        .font(.headline)
+                        .padding(.horizontal)
                 }
             }
+            
             // Línea divisoria
             Divider()
                 .padding(.horizontal)
-                .padding(.top, 5) // Padding for the line separator
+                .padding(.top, 5)
             
             // Imagen principal (de la publicación actual)
             ZStack {
-                Image(selectedImage) // Use the selected image
+                Image(selectedImage)
                     .resizable()
                     .scaledToFit()
                     .frame(width: UIScreen.main.bounds.width - 30, height: 400)
                     .cornerRadius(15)
                     .padding(.top, 20)
-                    .opacity(isLoading ? 0.5 : 1.0) // Apply fade effect during loading
+                    .opacity(isLoading ? 0.5 : 1.0)
                 
                 if isLoading {
-                    CargarApi() // Show loading view when loading
-                        .frame(width: UIScreen.main.bounds.width - 30, height: 400) // Same size as the image
+                    CargarApi()
+                        .frame(width: UIScreen.main.bounds.width - 30, height: 400)
                         .cornerRadius(15)
                 }
             }
@@ -63,7 +64,7 @@ struct NewPost: View {
             HStack(spacing: 15) {
                 ForEach(galleryImages, id: \.self) { imageName in
                     Button(action: {
-                        selectedImage = imageName // Set selected image when button is pressed
+                        selectedImage = imageName
                     }) {
                         Image(imageName)
                             .resizable()
@@ -87,15 +88,10 @@ struct NewPost: View {
            
             // Botón de compartir
             Button(action: {
-                // Start loading process
                 isLoading = true
-                
-                // Reset post content after starting the loading
                 postContent = ""
-                
-                // Simulate an API call or image loading
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) { // Simulating a 2-second loading
-                    isLoading = false // End loading
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    isLoading = false
                 }
             }) {
                 Text("Compartir")
@@ -111,11 +107,12 @@ struct NewPost: View {
             
             Spacer()
         }
-        .padding() // Add overall padding to the VStack
+        .padding()
+        .navigationBarHidden(true) // Hide the default navigation bar
     }
 }
 
-struct PostView_Previews: PreviewProvider {
+struct NewPost_Previews: PreviewProvider {
     static var previews: some View {
         NewPost()
     }
