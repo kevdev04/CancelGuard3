@@ -16,7 +16,7 @@ struct TabbarView: View {
                         .tabItem { }
                         .tag(1)
                     
-                    Text("Profile View")
+                    ProfileView()  // Changed from Text to ProfileView
                         .tabItem { }
                         .tag(3)
                 }
@@ -73,8 +73,6 @@ struct TabbarItem: View {
         }
     }
 }
-
-
 
 struct TabbarView_Previews: PreviewProvider {
     static var previews: some View {

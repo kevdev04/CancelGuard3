@@ -24,6 +24,8 @@
 		DE1B5A382CC4694A00FA91C8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE1B5A232CC4694A00FA91C8 /* Assets.xcassets */; };
 		DE1B5A392CC4694A00FA91C8 /* posts.json in Resources */ = {isa = PBXBuildFile; fileRef = DE1B5A272CC4694A00FA91C8 /* posts.json */; };
 		DE1B5A3A2CC4694A00FA91C8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE1B5A1D2CC4694A00FA91C8 /* Preview Assets.xcassets */; };
+		DEB5865F2CC4BF6B006C1474 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB5865E2CC4BF6B006C1474 /* SwiftUIView.swift */; };
+		DEB586632CC4DEF9006C1474 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB586622CC4DEF9006C1474 /* CameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +46,8 @@
 		DE1B5A262CC4694A00FA91C8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		DE1B5A272CC4694A00FA91C8 /* posts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = posts.json; sourceTree = "<group>"; };
 		DE1B5A282CC4694A00FA91C8 /* TabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarView.swift; sourceTree = "<group>"; };
+		DEB5865E2CC4BF6B006C1474 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
+		DEB586622CC4DEF9006C1474 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		E55B361D2A6181EC00CB859B /* SocialMediaTutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocialMediaTutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -117,6 +121,8 @@
 			isa = PBXGroup;
 			children = (
 				DE1B5A212CC4694A00FA91C8 /* HomeView.swift */,
+				DEB5865E2CC4BF6B006C1474 /* SwiftUIView.swift */,
+				DEB586622CC4DEF9006C1474 /* CameraView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -239,6 +245,8 @@
 				DE1B5A352CC4694A00FA91C8 /* HomeView.swift in Sources */,
 				DE1B5A362CC4694A00FA91C8 /* ContentView.swift in Sources */,
 				DE1B5A372CC4694A00FA91C8 /* FetchDataJson.swift in Sources */,
+				DEB5865F2CC4BF6B006C1474 /* SwiftUIView.swift in Sources */,
+				DEB586632CC4DEF9006C1474 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +378,9 @@
 				DEVELOPMENT_TEAM = 2CYK4KPJ3D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs access to your camera to take photos for adding stories.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs permission to save photos to your library";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app needs access to your photo library to save photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -399,6 +410,9 @@
 				DEVELOPMENT_TEAM = 2CYK4KPJ3D;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs access to your camera to take photos for adding stories.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs permission to save photos to your library";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "This app needs access to your photo library to save photos.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
