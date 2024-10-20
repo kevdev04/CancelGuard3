@@ -43,7 +43,7 @@ struct CargarApi: View {
         if isAnimating {
             VStack {
                 ScanningAnimationView(isAnimating: $isAnimating)
-                Text("Scanning...")
+                Text("Validando imagen...")
                     .padding(.top)
             }
         } else {
@@ -55,10 +55,14 @@ struct CargarApi: View {
 struct NewPost: View {
     let galleryImages = ["imagen-1", "imagen-2", "imagen-3"]
     
+    // Categorías asociadas a las imágenes
+    let imageCategories = ["tarjeta", "gimnasio", "ebrio"]
+    
     @State private var postTitle: String = ""
     @State private var postContent: String = ""
     @State private var isLoading: Bool = false
     @State private var selectedImage: String = "imagen-1"
+    @State private var selectedCategory: String = "tarjeta" // Categoría de la imagen seleccionada
     @State private var showCamera = false
     @State private var capturedImage: UIImage?
     @Environment(\.presentationMode) var presentationMode
@@ -123,12 +127,13 @@ struct NewPost: View {
                         .cornerRadius(15)
                 }
                 
-                ForEach(galleryImages, id: \.self) { imageName in
+                ForEach(0..<galleryImages.count, id: \.self) { index in
                     Button(action: {
-                        selectedImage = imageName
+                        selectedImage = galleryImages[index]
+                        selectedCategory = imageCategories[index] // Actualiza la categoría
                         capturedImage = nil
                     }) {
-                        Image(imageName)
+                        Image(galleryImages[index])
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 80, height: 80)
@@ -150,8 +155,20 @@ struct NewPost: View {
             Button(action: {
                 isLoading = true
                 postContent = ""
+                
+                // Simula la llamada de la API y realiza la validación
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     isLoading = false
+                    
+                    if selectedCategory == "gimnasio" {
+                        // Fomentar el ejercicio
+                        print("¡Buen trabajo! Fomentas el ejercicio en cualquier espacio.")
+                    } else if selectedCategory == "tarjeta" || selectedCategory == "ebrio" {
+                        // Caso de imagen no apta para redes sociales
+                        print("Esta imagen no es adecuada para redes sociales.")
+                    } else {
+                        print("Publicación realizada correctamente.")
+                    }
                 }
             }) {
                 Text("Compartir")
@@ -175,8 +192,6 @@ struct NewPost: View {
     }
 }
 
-
-
 struct NewPost_Previews: PreviewProvider {
     static var previews: some View {
         NewPost()
@@ -184,13 +199,3 @@ struct NewPost_Previews: PreviewProvider {
 }
 
 // Placeholder for LlamaAnalysis view
-
-
-extension UIImage {
-    func withHorizontallyFlippedOrientation() -> UIImage {
-        if let cgImage = self.cgImage {
-            return UIImage(cgImage: cgImage, scale: self.scale, orientation: .leftMirrored)
-        }
-        return self
-    }
-}
