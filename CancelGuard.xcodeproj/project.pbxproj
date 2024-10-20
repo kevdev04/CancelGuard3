@@ -26,6 +26,7 @@
 		DE1B5A3A2CC4694A00FA91C8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DE1B5A1D2CC4694A00FA91C8 /* Preview Assets.xcassets */; };
 		DEB5865F2CC4BF6B006C1474 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB5865E2CC4BF6B006C1474 /* SwiftUIView.swift */; };
 		DEB586632CC4DEF9006C1474 /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB586622CC4DEF9006C1474 /* CameraView.swift */; };
+		DEB586652CC4E836006C1474 /* LlamaAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB586642CC4E836006C1474 /* LlamaAnalysis.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		DE1B5A282CC4694A00FA91C8 /* TabbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarView.swift; sourceTree = "<group>"; };
 		DEB5865E2CC4BF6B006C1474 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		DEB586622CC4DEF9006C1474 /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
+		DEB586642CC4E836006C1474 /* LlamaAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LlamaAnalysis.swift; sourceTree = "<group>"; };
 		E55B361D2A6181EC00CB859B /* SocialMediaTutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocialMediaTutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -123,6 +125,7 @@
 				DE1B5A212CC4694A00FA91C8 /* HomeView.swift */,
 				DEB5865E2CC4BF6B006C1474 /* SwiftUIView.swift */,
 				DEB586622CC4DEF9006C1474 /* CameraView.swift */,
+				DEB586642CC4E836006C1474 /* LlamaAnalysis.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 				DE1B5A362CC4694A00FA91C8 /* ContentView.swift in Sources */,
 				DE1B5A372CC4694A00FA91C8 /* FetchDataJson.swift in Sources */,
 				DEB5865F2CC4BF6B006C1474 /* SwiftUIView.swift in Sources */,
+				DEB586652CC4E836006C1474 /* LlamaAnalysis.swift in Sources */,
 				DEB586632CC4DEF9006C1474 /* CameraView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

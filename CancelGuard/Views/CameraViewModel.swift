@@ -1,3 +1,11 @@
+//
+//  CameraViewModel.swift
+//  SocialMediaTutorial
+//
+//  Created by Kevin Garcia on 20/10/24.
+//
+
+
 import SwiftUI
 import AVFoundation
 import Photos
@@ -12,6 +20,7 @@ class CameraViewModel: NSObject, ObservableObject {
     @Published var picData: Data?
     @Published var flashMode: AVCaptureDevice.FlashMode = .off
     @Published var cameraPosition: AVCaptureDevice.Position = .back
+    @Published var isPosting = false
 
     override init() {
         super.init()
@@ -63,9 +72,6 @@ class CameraViewModel: NSObject, ObservableObject {
         DispatchQueue.global(qos: .background).async {
             let settings = AVCapturePhotoSettings()
             settings.flashMode = self.flashMode
-            if self.cameraPosition == .front {
-                settings.isAutoStillImageStabilizationEnabled = false
-            }
             self.output.capturePhoto(with: settings, delegate: self)
             DispatchQueue.main.async {
                 withAnimation { self.isTaken = true }
@@ -74,23 +80,29 @@ class CameraViewModel: NSObject, ObservableObject {
     }
     
     func retakePic() {
+        DispatchQueue.global(qos: .background).async {
+            self.session.startRunning()
             DispatchQueue.main.async {
                 withAnimation {
                     self.isTaken = false
                     self.picData = nil
                 }
                 self.isSaved = false
-                DispatchQueue.global(qos: .background).async {
-                    self.session.startRunning()
-                }
             }
         }
+    }
     
     func savePic() {
         guard let imageData = self.picData, let image = UIImage(data: imageData) else { return }
         
-        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        let flippedImage: UIImage
+        if cameraPosition == .front {
+            flippedImage = UIImage(cgImage: image.cgImage!, scale: image.scale, orientation: .leftMirrored)
+        } else {
+            flippedImage = image
+        }
         
+        UIImageWriteToSavedPhotosAlbum(flippedImage, nil, nil, nil)
         self.isSaved = true
         
         print("Saved Successfully...")
@@ -105,8 +117,16 @@ class CameraViewModel: NSObject, ObservableObject {
     func toggleFlash() {
         flashMode = flashMode == .on ? .off : .on
     }
+    
+    func postPic() {
+        // Simulating a post action
+        isPosting = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.isPosting = false
+            print("Photo posted successfully...")
+        }
+    }
 }
-
 
 extension CameraViewModel: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
@@ -133,7 +153,7 @@ struct CameraView: View {
             VStack {
                 if camera.isTaken {
                     if let imageData = camera.picData, let uiImage = UIImage(data: imageData) {
-                        Image(uiImage: camera.cameraPosition == .front ? uiImage.withHorizontallyFlippedOrientation() : uiImage)
+                        Image(uiImage: uiImage)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .edgesIgnoringSafeArea(.all)
@@ -143,39 +163,16 @@ struct CameraView: View {
                         .edgesIgnoringSafeArea(.all)
                 }
                 
-                HStack(spacing: 20) {
-                    if camera.isTaken {
-                        Button(action: {
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .frame(width: 60, height: 60)
-                                .background(Color.red.opacity(0.7))
-                                .clipShape(Circle())
-                        }
-                        
-                        Button(action: {
-                            camera.savePic()
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            Image(systemName: "checkmark")
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .frame(width: 60, height: 60)
-                                .background(Color.green.opacity(0.7))
-                                .clipShape(Circle())
-                        }
-                    } else {
-                        Button(action: camera.toggleFlash) {
-                            Image(systemName: camera.flashMode == .on ? "bolt.fill" : "bolt.slash.fill")
-                                .font(.system(size: 20, weight: .medium))
-                                .foregroundColor(.white)
-                                .frame(width: 50, height: 50)
-                                .background(Color.gray.opacity(0.3))
-                                .clipShape(Circle())
-                        }
+                if camera.isTaken {
+                    HStack(spacing: 20) {
+                        CustomButton(action: camera.retakePic, icon: "arrow.counterclockwise", label: "Retake")
+                        CustomButton(action: { camera.savePic() }, icon: "square.and.arrow.down", label: "Save")
+                        CustomButton(action: { camera.postPic() }, icon: "paperplane.fill", label: "Post")
+                    }
+                    .padding(.bottom, 30)
+                } else {
+                    HStack {
+                        CustomButton(action: camera.toggleFlash, icon: camera.flashMode == .on ? "bolt.fill" : "bolt.slash.fill", label: "Flash")
                         
                         Spacer()
                         
@@ -192,18 +189,11 @@ struct CameraView: View {
                         
                         Spacer()
                         
-                        Button(action: camera.switchCamera) {
-                            Image(systemName: "camera.rotate")
-                                .font(.system(size: 20, weight: .medium))
-                                .foregroundColor(.white)
-                                .frame(width: 50, height: 50)
-                                .background(Color.gray.opacity(0.3))
-                                .clipShape(Circle())
-                        }
+                        CustomButton(action: camera.switchCamera, icon: "camera.rotate", label: "Switch")
                     }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 30)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 30)
             }
             
             VStack {
@@ -214,16 +204,22 @@ struct CameraView: View {
                         Image(systemName: "xmark")
                             .foregroundColor(.white)
                             .font(.title2)
-                            .padding(10)
-                            .background(Color.black.opacity(0.6))
-                            .clipShape(Circle())
+                            .padding()
                     }
-                    .padding()
                     
                     Spacer()
                 }
                 
                 Spacer()
+            }
+            
+            if camera.isPosting {
+                Color.black.opacity(0.5)
+                    .edgesIgnoringSafeArea(.all)
+                
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(2)
             }
         }
         .alert(isPresented: $camera.alert) {
@@ -231,23 +227,6 @@ struct CameraView: View {
         }
     }
 }
-
-extension UIImage {
-    func withHorizontallyFlippedOrientation() -> UIImage {
-        if let cgImage = self.cgImage {
-            return UIImage(cgImage: cgImage, scale: self.scale, orientation: .leftMirrored)
-        }
-        return self
-    }
-}
-
-// Add this extension to support corner radius on specific corners
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
-
 
 struct CameraPreview: UIViewRepresentable {
     @ObservedObject var camera: CameraViewModel
@@ -266,6 +245,27 @@ struct CameraPreview: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
+    }
+}
+
+struct CustomButton: View {
+    var action: () -> Void
+    var icon: String
+    var label: String
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Image(systemName: icon)
+                    .foregroundColor(.white)
+                Text(label)
+                    .foregroundColor(.white)
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+            .background(Color.gray.opacity(0.3))
+            .clipShape(Capsule())
+        }
     }
 }
 
