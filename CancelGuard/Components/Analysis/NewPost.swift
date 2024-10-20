@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct ScanningAnimationView: View {
     @State private var yOffset: CGFloat = -120
@@ -52,19 +53,21 @@ struct CargarApi: View {
     }
 }
 
+import SwiftUI
+
 struct NewPost: View {
     let galleryImages = ["imagen-1", "imagen-2", "imagen-3"]
-    
-    // Categorías asociadas a las imágenes
     let imageCategories = ["tarjeta", "gimnasio", "ebrio"]
     
     @State private var postTitle: String = ""
     @State private var postContent: String = ""
     @State private var isLoading: Bool = false
     @State private var selectedImage: String = "imagen-1"
-    @State private var selectedCategory: String = "tarjeta" // Categoría de la imagen seleccionada
+    @State private var selectedCategory: String = "tarjeta"
     @State private var showCamera = false
     @State private var capturedImage: UIImage?
+    @State private var showAlert = false
+    @State private var alertMessage = ""
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -130,7 +133,7 @@ struct NewPost: View {
                 ForEach(0..<galleryImages.count, id: \.self) { index in
                     Button(action: {
                         selectedImage = galleryImages[index]
-                        selectedCategory = imageCategories[index] // Actualiza la categoría
+                        selectedCategory = imageCategories[index]
                         capturedImage = nil
                     }) {
                         Image(galleryImages[index])
@@ -161,14 +164,13 @@ struct NewPost: View {
                     isLoading = false
                     
                     if selectedCategory == "gimnasio" {
-                        // Fomentar el ejercicio
-                        print("¡Buen trabajo! Fomentas el ejercicio en cualquier espacio.")
+                        alertMessage = "¡Buen trabajo! Esta imagen promueve tu cuenta de una manera positiva."
                     } else if selectedCategory == "tarjeta" || selectedCategory == "ebrio" {
-                        // Caso de imagen no apta para redes sociales
-                        print("Esta imagen no es adecuada para redes sociales.")
+                        alertMessage = "Esta imagen no es adecuada para redes sociales y podria dañar tu reputación."
                     } else {
-                        print("Publicación realizada correctamente.")
+                        alertMessage = "Publicación realizada correctamente."
                     }
+                    showAlert = true
                 }
             }) {
                 Text("Compartir")
@@ -189,12 +191,25 @@ struct NewPost: View {
         .sheet(isPresented: $showCamera) {
             CameraView(capturedImage: $capturedImage)
         }
+        .alert(isPresented: $showAlert) {
+            Alert(title: Text("Resultados"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
     }
 }
 
 struct NewPost_Previews: PreviewProvider {
     static var previews: some View {
         NewPost()
+    }
+}
+
+
+extension UIImage {
+    func withHorizontallyFlippedOrientation() -> UIImage {
+        if let cgImage = self.cgImage {
+            return UIImage(cgImage: cgImage, scale: self.scale, orientation: .leftMirrored)
+        }
+        return self
     }
 }
 

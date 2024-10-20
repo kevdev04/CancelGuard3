@@ -105,6 +105,14 @@ extension CameraViewModel: AVCapturePhotoCaptureDelegate {
         guard let imageData = photo.fileDataRepresentation() else { return }
         
         self.picData = imageData
+        
+        // Correct the orientation based on the camera position
+        if let uiImage = UIImage(data: imageData) {
+            // Front camera photos need horizontal flip
+            if cameraPosition == .front {
+                self.picData = uiImage.withHorizontallyFlippedOrientation().jpegData(compressionQuality: 1.0)
+            }
+        }
     }
 }
 
