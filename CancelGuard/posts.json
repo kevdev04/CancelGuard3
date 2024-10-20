@@ -4,30 +4,30 @@
     "like_count": 50,
     "comment_count": 12,
     "view_count": 1200,
-    "description": "Learn the basics of Python programming!",
+    "description": "Embracing every moment and turning dreams into reality, one step at a time! ✨💪 #ChaseYourDreams",
     "profile_img": "cat2",
-    "profile_name": "Burger King",
-    "profile_id": "burgerking"
+    "profile_name": "Mark Zuckerberg",
+    "profile_id": "Zuck"
   },
   {
     "image": "post2",
     "like_count": 80,
     "comment_count": 15,
     "view_count": 1500,
-    "description": "Discover the latest JavaScript frameworks!",
+    "description": "I don’t always drink beer, but when I do, I prefer to make sure everyone knows about it! 🍻",
     "profile_img": "cat",
-    "profile_name": "Meta Horizon",
-    "profile_id": "metahorizon"
+    "profile_name": "Cristiano",
+    "profile_id": "CR7"
   },
   {
     "image": "post3",
     "like_count": 120,
     "comment_count": 25,
     "view_count": 2000,
-    "description": "Explore machine learning algorithms in R!",
+    "description": "Why save for a rainy day when I can spend it all on impulse buys today? 🌧️💸",
     "profile_img": "bear",
-    "profile_name": "Facebook ",
-    "profile_id": "facebook"
+    "profile_name": "Leonardo",
+    "profile_id": "dicaprio"
   },
   {
     "image": "post4",
@@ -37,76 +37,6 @@
     "description": "Tips for optimizing your SQL queries!",
     "profile_img": "deer",
     "profile_name": "Meta",
-    "profile_id": "meta"
-  },
-  {
-    "image": "post4",
-    "like_count": 70,
-    "comment_count": 18,
-    "view_count": 1400,
-    "description": "Tips for optimizing your SQL queries!",
-    "profile_img": "deer",
-    "profile_name": "Adem David",
-    "profile_id": "gabrial_micheal"
-  },
-  {
-    "image": "post5",
-    "like_count": 70,
-    "comment_count": 18,
-    "view_count": 1400,
-    "description": "Tips for optimizing your SQL queries!",
-    "profile_img": "cat2",
-    "profile_name": "Mohammad Gabrial",
-    "profile_id": "gabrial_micheal"
-  },
-  {
-    "image": "post6",
-    "like_count": 90,
-    "comment_count": 20,
-    "view_count": 1800,
-    "description": "Introduction to data structures in C++!",
-    "profile_img": "cat",
-    "profile_name": "Gabrial David",
-    "profile_id": "gabrial_micheal"
-  },
-  {
-    "image": "post7",
-    "like_count": 60,
-    "comment_count": 14,
-    "view_count": 1300,
-    "description": "Build a RESTful API using Node.js and Express!",
-    "profile_img": "bear",
-    "profile_name": "Adam Mohammad",
-    "profile_id": "gabrial_micheal"
-  },
-  {
-    "image": "post8",
-    "like_count": 100,
-    "comment_count": 22,
-    "view_count": 2200,
-    "description": "Introduction to object-oriented programming concepts!",
-    "profile_img": "deer",
-    "profile_name": "David Micheal",
-    "profile_id": "gabrial_micheal"
-  },
-  {
-    "image": "post9",
-    "like_count": 75,
-    "comment_count": 16,
-    "view_count": 1600,
-    "description": "Exploring the world of front-end web development!",
-    "profile_img": "cat2",
-    "profile_name": "Adam Adam",
-    "profile_id": "gabrial_micheal"
-  },
-  {
-    "image": "post10",
-    "like_count": 110,
-    "comment_count": 30,
-    "view_count": 2400,
-    "description": "Mastering algorithms and data structures in Java!",
-    "profile_img": "cat",
-    "profile_name": "Gabrial Adam",
-    "profile_id": "gabrial_micheal"
+    "profile_id": "Menlo Park"
   }
 ]

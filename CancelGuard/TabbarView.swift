@@ -25,8 +25,8 @@ struct TabbarView: View {
                     ForEach(0..<4) { index in
                         Spacer()
                         if index == 2 {
-                            NavigationLink(destination: NewPost(), isActive: $isNewPostPresented) {
-                                Image(systemName: "plus.app.fill")
+                            NavigationLink(destination: NewPost()) {
+                                Image(systemName: "plus.app")
                                     .font(.system(size: 22))
                                     .foregroundColor(.primary)
                                     .padding(8)

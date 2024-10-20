@@ -73,19 +73,6 @@ class CameraViewModel: NSObject, ObservableObject {
         }
     }
     
-    func retakePic() {
-            DispatchQueue.main.async {
-                withAnimation {
-                    self.isTaken = false
-                    self.picData = nil
-                }
-                self.isSaved = false
-                DispatchQueue.global(qos: .background).async {
-                    self.session.startRunning()
-                }
-            }
-        }
-    
     func savePic() {
         guard let imageData = self.picData, let image = UIImage(data: imageData) else { return }
         
@@ -107,7 +94,6 @@ class CameraViewModel: NSObject, ObservableObject {
     }
 }
 
-
 extension CameraViewModel: AVCapturePhotoCaptureDelegate {
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if error != nil {
@@ -125,6 +111,7 @@ extension CameraViewModel: AVCapturePhotoCaptureDelegate {
 struct CameraView: View {
     @StateObject var camera = CameraViewModel()
     @Environment(\.presentationMode) var presentationMode
+    @Binding var capturedImage: UIImage?
     
     var body: some View {
         ZStack {
@@ -146,84 +133,46 @@ struct CameraView: View {
                 HStack(spacing: 20) {
                     if camera.isTaken {
                         Button(action: {
+                            if let imageData = camera.picData, let uiImage = UIImage(data: imageData) {
+                                capturedImage = camera.cameraPosition == .front ? uiImage.withHorizontallyFlippedOrientation() : uiImage
+                            }
                             presentationMode.wrappedValue.dismiss()
                         }) {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .frame(width: 60, height: 60)
-                                .background(Color.red.opacity(0.7))
-                                .clipShape(Circle())
-                        }
-                        
-                        Button(action: {
-                            camera.savePic()
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            Image(systemName: "checkmark")
-                                .font(.title)
-                                .foregroundColor(.white)
-                                .frame(width: 60, height: 60)
-                                .background(Color.green.opacity(0.7))
-                                .clipShape(Circle())
+                            Text("Use Photo")
+                                .foregroundColor(.black)
+                                .fontWeight(.semibold)
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 20)
+                                .background(Color.white)
+                                .clipShape(Capsule())
                         }
                     } else {
                         Button(action: camera.toggleFlash) {
                             Image(systemName: camera.flashMode == .on ? "bolt.fill" : "bolt.slash.fill")
-                                .font(.system(size: 20, weight: .medium))
                                 .foregroundColor(.white)
-                                .frame(width: 50, height: 50)
-                                .background(Color.gray.opacity(0.3))
-                                .clipShape(Circle())
+                                .font(.system(size: 20, weight: .medium))
                         }
-                        
-                        Spacer()
                         
                         Button(action: camera.takePic) {
-                            Circle()
-                                .fill(Color.white)
-                                .frame(width: 80, height: 80)
-                                .overlay(
-                                    Circle()
-                                        .stroke(Color.black.opacity(0.8), lineWidth: 2)
-                                        .frame(width: 65, height: 65)
-                                )
+                            ZStack {
+                                Circle()
+                                    .fill(Color.white)
+                                    .frame(width: 65, height: 65)
+                                
+                                Circle()
+                                    .stroke(Color.white, lineWidth: 2)
+                                    .frame(width: 75, height: 75)
+                            }
                         }
-                        
-                        Spacer()
                         
                         Button(action: camera.switchCamera) {
                             Image(systemName: "camera.rotate")
-                                .font(.system(size: 20, weight: .medium))
                                 .foregroundColor(.white)
-                                .frame(width: 50, height: 50)
-                                .background(Color.gray.opacity(0.3))
-                                .clipShape(Circle())
+                                .font(.system(size: 20, weight: .medium))
                         }
                     }
                 }
-                .padding(.horizontal, 20)
                 .padding(.bottom, 30)
-            }
-            
-            VStack {
-                HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Image(systemName: "xmark")
-                            .foregroundColor(.white)
-                            .font(.title2)
-                            .padding(10)
-                            .background(Color.black.opacity(0.6))
-                            .clipShape(Circle())
-                    }
-                    .padding()
-                    
-                    Spacer()
-                }
-                
-                Spacer()
             }
         }
         .alert(isPresented: $camera.alert) {
@@ -231,23 +180,6 @@ struct CameraView: View {
         }
     }
 }
-
-extension UIImage {
-    func withHorizontallyFlippedOrientation() -> UIImage {
-        if let cgImage = self.cgImage {
-            return UIImage(cgImage: cgImage, scale: self.scale, orientation: .leftMirrored)
-        }
-        return self
-    }
-}
-
-// Add this extension to support corner radius on specific corners
-extension View {
-    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
-        clipShape(RoundedCorner(radius: radius, corners: corners))
-    }
-}
-
 
 struct CameraPreview: UIViewRepresentable {
     @ObservedObject var camera: CameraViewModel
@@ -266,11 +198,5 @@ struct CameraPreview: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIView, context: Context) {
-    }
-}
-
-struct CameraView_Previews: PreviewProvider {
-    static var previews: some View {
-        CameraView()
     }
 }
